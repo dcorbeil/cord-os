@@ -8,6 +8,9 @@ target:
 
 repos:
 
+  meta-cord:
+    path: layers/meta-cord
+
   poky:
     url: https://git.yoctoproject.org/git/poky
     path: layers/third-party/poky
@@ -73,15 +76,3 @@ local_conf_header:
         HALT,${DL_DIR},100M,1K \
         HALT,${SSTATE_DIR},100M,1K \
         HALT,/tmp,10M,1K"
-
-  # Temporary way to fiddle with the image until I create a proper layer/distro
-  temporary_configs: |
-    EXTRA_IMAGE_FEATURES ?= "allow-empty-password empty-root-password allow-root-login"
-    # EXTRA_IMAGE_FEATURES ?= "allow-root-login"
-    IMAGE_INSTALL:append = " nano dropbear"
-
-    INHERIT += "extrausers"
-    # Password is 'password'
-    # It was generated with: openssl passwd -1 password
-    # The $ were escaped with \$
-    EXTRA_USERS_PARAMS = "usermod -p '\$1\$GYn4f9V5\$IotMhfo57nY73zcA6SJih0' root;"
