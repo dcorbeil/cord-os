@@ -54,8 +54,8 @@ local_conf_header:
     DL_DIR ?= "${OPTDIR}/yocto/downloads"
     # Where to place shared-state files
     SSTATE_DIR ?= "${OPTDIR}/yocto/sstate-cache"
-    # Where to place the build output
-    TMPDIR = "${OPTDIR}/yocto/tmp"
+    # # Where to place the build output
+    # TMPDIR = "${OPTDIR}/yocto/tmp"
   # reduce_diskspace: |
   #   INHERIT += "rm_work_and_downloads"
   standard: |

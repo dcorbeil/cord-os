@@ -15,15 +15,15 @@ source layers/third-party/poky/oe-init-build-env
 ```
 
 ```shell
-bitbake core-image-base
+bitbake cord-image
 ```
 
 ```shell
 sudo umount /dev/sdX*
-sudo bmaptool copy /opt/cord/yocto/tmp/deploy/images/raspberrypi2/core-image-base-raspberrypi2.rootfs.wic.bz2 /dev/sdX
+sudo bmaptool copy build/tmp/deploy/images/raspberrypi2/cord-image-raspberrypi2.rootfs.wic.bz2 /dev/sdX
 ```
 
 ```shell
-MACHINE=qemuarm bitbake core-image-base
+MACHINE=qemuarm bitbake cord-image
 runqemu qemuarm nographic
 ```
