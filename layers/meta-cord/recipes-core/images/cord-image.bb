@@ -13,7 +13,7 @@ EXTRA_IMAGE_FEATURES ?= "allow-empty-password empty-root-password allow-root-log
 # nano for text editing
 # dropbear for ssh access. Its a light-weight ssh server and DOESN'T support sftp
 # udev-extraconf for dynamic device handling
-IMAGE_INSTALL:append = " nano dropbear udev-extraconf"
+IMAGE_INSTALL:append = " nano dropbear udev-extraconf sl"
 
 INHERIT += "extrausers"
 # Password is 'password'
