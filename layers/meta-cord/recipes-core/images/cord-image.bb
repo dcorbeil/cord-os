@@ -7,6 +7,12 @@ LICENSE = "MIT"
 
 inherit core-image
 
+# FIXME: Figure out and document what is the perfect place for these settings to live.
+# I can probably figure out that the settings for allowing root login and empty password belongs
+# in a potential new debug image recipe.
+# Although, for the packages to install logically they belong in the the distro so I need to find the
+# right way to do that.
+
 EXTRA_IMAGE_FEATURES ?= "allow-empty-password empty-root-password allow-root-login"
 # EXTRA_IMAGE_FEATURES ?= "allow-root-login"
 
