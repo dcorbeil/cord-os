@@ -1,0 +1,33 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    compatible = "brcm,bcm2835", "brcm,bcm2708", "brcm,bcm2709";
+
+    fragment@0 {
+        target = <&gpio>;
+        __overlay__ {
+            leds {
+                compatible = "gpio-leds";
+                pinctrl-names = "default";
+                pinctrl-0 = <&gpio0_pins>;
+
+                led {
+                    label = "led_ctrl_led";
+                    gpios = <&gpio 0 0>;
+                    default-state = "off";
+                };
+            };
+        };
+    };
+
+    fragment@1 {
+        target = <&bcm2708_gpiopin_pins>;
+        __overlay__ {
+            gpio0_pins: gpio0_pins {
+                brcm,pins = <0>;
+                brcm,function = <0>; /* 0=IN, 1=OUT */
+            };
+        };
+    };
+};
