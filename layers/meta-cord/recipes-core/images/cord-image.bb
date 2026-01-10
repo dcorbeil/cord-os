@@ -19,8 +19,10 @@ IMAGE_FEATURES += "allow-empty-password empty-root-password allow-root-login"
 # dropbear for ssh access. Its a light-weight ssh server and DOESN'T support sftp
 # udev-extraconf for dynamic device handling
 # sl for fun
-# IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl libgpiod libgpiod-tools libgpiod-dev led-ctrl"
+# IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl libgpiod libgpiod-tools libgpiod-dev"
 # IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world"
+# IMAGE_INSTALL:append = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world libgpiod libgpiod-tools libgpiod-dev"
+IMAGE_INSTALL:append = "packagegroup-core-boot nano openssh udev-extraconf sl kernel-module-hello-world"
 IMAGE_INSTALL:append = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world"
 
 INHERIT += "extrausers"
