@@ -23,7 +23,10 @@ IMAGE_FEATURES += "allow-empty-password empty-root-password allow-root-login"
 # IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world"
 # IMAGE_INSTALL:append = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world libgpiod libgpiod-tools libgpiod-dev"
 IMAGE_INSTALL:append = "packagegroup-core-boot nano openssh udev-extraconf sl kernel-module-hello-world"
-IMAGE_INSTALL:append = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world"
+
+# Install kernel devsrc for building out-of-tree modules on target.
+# TODO: This should be a development-only feature and live in a development image.
+TOOLCHAIN_TARGET_TASK += "kernel-devsrc"
 
 INHERIT += "extrausers"
 # Password is 'password'
