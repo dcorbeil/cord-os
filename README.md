@@ -60,6 +60,25 @@ Building only one package
 bitbake <package name>
 ```
 
+### Working with sub make module
+
+FIXME: Refine this section
+
+```bash
+bitbake -c menuconfig virtual/bootloader
+bitbake -c menuconfig virtual/kernel
+bitbake busybox -c menuconfig # ??
+```
+
+Configs are written to .config in the build directory. So far I'm copying them manually back to
+the git tree, It works but not ideal. For example:
+
+```bash
+cp build/tmp-glibc/work/dogbonedark-oe-linux-gnueabi/linux-kiss/6.16/build/defconfig <defconfig_location>
+```
+
+[This](https://stackoverflow.com/questions/61220838/change-kernel-config-but-defconfig-already-there) could be relevant also
+
 ### Cross-compiling kernel module
 
 Paths might change as I'm writing these steps after my first try. There might be some non-ideal
@@ -67,54 +86,54 @@ things happening in here but it works. For now, it'll stay like that because it 
 
 1. Add kernel dev package for the image in `cord-image.bb`
 
-```shell
-TOOLCHAIN_TARGET_TASK += "kernel-devsrc"
-```
+    ```shell
+    TOOLCHAIN_TARGET_TASK += "kernel-devsrc"
+    ```
 
 2. Build the cross compilation SDK
 
-```shell
-bitbake cord-image -c populate_sdk
-```
+    ```shell
+    bitbake cord-image -c populate_sdk
+    ```
 
 3. Extract the SDK. This will prompt for an install location
 
-```shell
-./tmp-glibc/deploy/sdk/oecore-cord-image-x86_64-cortexa7t2hf-neon-vfpv4-raspberrypi2-toolchain-nodistro.0.sh
-```
+    ```shell
+    ./tmp-glibc/deploy/sdk/oecore-cord-image-x86_64-cortexa7t2hf-neon-vfpv4-raspberrypi2-toolchain-nodistro.0.sh
+    ```
 
 4. `cd` to the location where the toolchain was extracted, inside the `usr/src/kernel` directory. In
    my case it was `/opt/cord/test_yocto_sdk/sysroots/cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi/usr/src/kernel`
 
-```shell
-cd /opt/cord/test_yocto_sdk/sysroots/cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi/usr/src/kernel
-```
+    ```shell
+    cd /opt/cord/test_yocto_sdk/sysroots/cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi/usr/src/kernel
+    ```
 
 5. Prepare the kernel source for building
 
-```shell
-make scripts
-make prepare
-```
+    ```shell
+    make scripts
+    make prepare
+    ```
 
 6. In the directory containing the kernel module to be built source the cross compiler environment
 
-```shell
-source /opt/cord/test_yocto_sdk/environment-setup-cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi
-```
+    ```shell
+    source /opt/cord/test_yocto_sdk/environment-setup-cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi
+    ```
 
 7. Build the kernel :)
 
-```shell
-# Needed to tell the makefile where the kernel sources are
-export KERNEL_SRC=/opt/cord/test_yocto_sdk/sysroots/cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi/usr/src/kernel
-# Build
-make all
-# The kernel expect the kernel objects to be compressed. This can be done by simply doing
-xz -fv <kernel object file>.ko
-# or by doing the following if available
-make compress
-```
+    ```shell
+    # Needed to tell the makefile where the kernel sources are
+    export KERNEL_SRC=/opt/cord/test_yocto_sdk/sysroots/cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi/usr/src/kernel
+    # Build
+    make all
+    # If the kernel expect the kernel objects to be compressed. This can be done by simply doing
+    xz -fv <kernel object file>.ko
+    # or by doing the following if available
+    make compress
+    ```
 
 ### Flashing
 
