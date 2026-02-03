@@ -21,7 +21,6 @@ IMAGE_FEATURES += "allow-empty-password empty-root-password allow-root-login"
 # sl for fun
 # IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl libgpiod libgpiod-tools libgpiod-dev"
 # IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world"
-# IMAGE_INSTALL:append = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world libgpiod libgpiod-tools libgpiod-dev"
 IMAGE_INSTALL:append = "packagegroup-core-boot nano openssh udev-extraconf sl kernel-module-hello-world"
 
 # Install kernel devsrc for building out-of-tree modules on target.

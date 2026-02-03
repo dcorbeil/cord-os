@@ -44,10 +44,10 @@ repos:
       meta-networking:
       meta-perl:
 
-  meta-qt5:
-    url: https://github.com/meta-qt5/meta-qt5/
-    path: layers/third-party/meta-qt5
-    branch: scarthgap
+  # meta-qt5:
+  #   url: https://github.com/meta-qt5/meta-qt5/
+  #   path: layers/third-party/meta-qt5
+  #   branch: scarthgap
 
   meta-raspberrypi:
     url: https://github.com/agherzan/meta-raspberrypi
