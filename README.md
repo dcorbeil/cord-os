@@ -70,7 +70,7 @@ bitbake -c menuconfig virtual/kernel
 bitbake busybox -c menuconfig # ??
 ```
 
-Configs are written to .config in the build directory. So far I'm copying them manually back to
+Configs are written to `.config` in the build directory. So far I'm copying them manually back to
 the git tree, It works but not ideal. For example:
 
 ```bash
@@ -116,7 +116,7 @@ things happening in here but it works. For now, it'll stay like that because it 
     make prepare
     ```
 
-6. In the directory containing the kernel module to be built source the cross compiler environment
+6. In the directory containing the kernel module to be built `source` the cross compiler environment
 
     ```shell
     source /opt/cord/test_yocto_sdk/environment-setup-cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi
@@ -129,17 +129,13 @@ things happening in here but it works. For now, it'll stay like that because it 
     export KERNEL_SRC=/opt/cord/test_yocto_sdk/sysroots/cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi/usr/src/kernel
     # Build
     make all
-    # If the kernel expect the kernel objects to be compressed. This can be done by simply doing
-    xz -fv <kernel object file>.ko
-    # or by doing the following if available
-    make compress
     ```
 
 ### Flashing
 
 ```shell
 sudo umount /dev/sdX*
-sudo bmaptool copy build/tmp-glibc/deploy/images/raspberrypi2/cord-image-raspberrypi2.rootfs.wic.bz2 /dev/sdX
+sudo bmaptool copy build/tmp-glibc/deploy/images/beaglebone-black/cord-image-beaglebone-black.rootfs.wic /dev/sdX
 ```
 
 ```shell

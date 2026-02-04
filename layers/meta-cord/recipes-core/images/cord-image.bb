@@ -34,6 +34,4 @@ INHERIT += "extrausers"
 # The $ were escaped with \$
 EXTRA_USERS_PARAMS = "usermod -p '\$1\$GYn4f9V5\$IotMhfo57nY73zcA6SJih0' root;"
 
-
-
 inherit core-image
