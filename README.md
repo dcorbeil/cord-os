@@ -14,7 +14,7 @@ Checkout local dependencies
 
 ```shell
 kas checkout
-source layers/third-party/poky/oe-init-build-env
+source layers/third-party/openembedded-core/oe-init-build-env
 ```
 
 ## Working with yocto
@@ -74,7 +74,7 @@ Configs are written to .config in the build directory. So far I'm copying them m
 the git tree, It works but not ideal. For example:
 
 ```bash
-cp build/tmp-glibc/work/dogbonedark-oe-linux-gnueabi/linux-kiss/6.16/build/defconfig <defconfig_location>
+cp build/tmp-glibc/work/beaglebone-black-oe-linux-gnueabi/linux-kiss/6.16/build/defconfig <defconfig_location>
 ```
 
 [This](https://stackoverflow.com/questions/61220838/change-kernel-config-but-defconfig-already-there) could be relevant also

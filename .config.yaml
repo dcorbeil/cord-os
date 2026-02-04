@@ -1,7 +1,7 @@
 header:
-  version: 8
+  version: 11
 
-machine: raspberrypi2
+machine: beaglebone-black
 distro: cord
 target:
   - cord-image
@@ -9,16 +9,9 @@ target:
 repos:
 
   meta-cord:
-    path: layers/meta-cord
-
-  # poky:
-  #   url: https://git.yoctoproject.org/git/poky
-  #   path: layers/third-party/poky
-  #   branch: scarthgap
-  #   layers:
-  #     meta:
-  #     meta-poky:
-  #     meta-yocto-bsp:
+    path: layers/
+    layers:
+      meta-cord:
 
   bitbake:
     url: "https://git.openembedded.org/bitbake"
@@ -34,25 +27,23 @@ repos:
     layers:
       meta:
 
+  meta-arm:
+    url: "git://git.yoctoproject.org/meta-arm"
+    path: layers/third-party/meta-arm
+    branch: scarthgap
+    layers:
+      meta-arm-toolchain:
+      meta-arm:
+
   meta-openembedded:
     url: http://git.openembedded.org/meta-openembedded
     path: layers/third-party/meta-openembedded
     branch: scarthgap
     layers:
       meta-oe:
-      meta-python:
-      meta-networking:
-      meta-perl:
-
-  # meta-qt5:
-  #   url: https://github.com/meta-qt5/meta-qt5/
-  #   path: layers/third-party/meta-qt5
-  #   branch: scarthgap
-
-  meta-raspberrypi:
-    url: https://github.com/agherzan/meta-raspberrypi
-    path: layers/third-party/meta-raspberrypi
-    branch: scarthgap
+  #     meta-python:
+  #     meta-networking:
+  #     meta-perl:
 
 bblayers_conf_header:
   standard: |

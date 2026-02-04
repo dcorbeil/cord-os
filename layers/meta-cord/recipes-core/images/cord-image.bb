@@ -5,7 +5,6 @@ LICENSE = "MIT"
 
 IMAGE_FEATURES += "splash"
 
-inherit core-image
 
 # FIXME: Figure out and document what is the perfect place for these settings to live.
 # I can probably figure out that the settings for allowing root login and empty password belongs
@@ -21,10 +20,12 @@ IMAGE_FEATURES += "allow-empty-password empty-root-password allow-root-login"
 # sl for fun
 # IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl libgpiod libgpiod-tools libgpiod-dev"
 # IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world"
-IMAGE_INSTALL:append = "packagegroup-core-boot nano openssh udev-extraconf sl kernel-module-hello-world"
+IMAGE_INSTALL:append = " packagegroup-core-boot nano openssh udev-extraconf sl kernel-module-hello-world"
 
 # Install kernel devsrc for building out-of-tree modules on target.
 # TODO: This should be a development-only feature and live in a development image.
+# Look at the following for an example:
+#   layers/third-party/openembedded-core/meta/recipes-extended/images/core-image-kernel-dev.bb
 TOOLCHAIN_TARGET_TASK += "kernel-devsrc"
 
 INHERIT += "extrausers"
@@ -34,3 +35,5 @@ INHERIT += "extrausers"
 EXTRA_USERS_PARAMS = "usermod -p '\$1\$GYn4f9V5\$IotMhfo57nY73zcA6SJih0' root;"
 
 
+
+inherit core-image
