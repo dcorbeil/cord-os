@@ -1,31 +1,96 @@
 
 # cord-os
 
-## Getting Started
+`cord-os` is a small Yocto playground for the [BeagleBone Black](https://www.beagleboard.org/boards/beaglebone-black). It includes a minimal BSP, examples
+showing how to configure and customize U-Boot, how to add and build a basic package, and how to
+build the Linux kernel. The repo can generate an SDK for cross-development and provides example
+recipes and configs to get you started quickly.
 
-Setup `/opt` directory that'll be used for caching downloads and persistent data between sandboxes
+This project doesn't use `poky`. As much as `poky` is awesome, it does a lot of heavy lifting. This
+can be great when wanting to have something up and running quickly. It is not so great when trying
+to learn Yocto as it does so many things for the user which makes it a bit hard to understand what
+is actually happening behind the scenes.
 
-```shell
-mkdir -p /opt/cord/yocto/
-sudo chmod 740 /opt/cord/
+Maybe surprisingly, this project doesn't support the Raspberry Pi. This is because so many Raspberry Pi
+Yocto tutorials use [meta-raspberrypi](https://github.com/agherzan/meta-raspberrypi) and like `poky`,
+this layer does so many things. Too many things. I elected to use the BBB instead and refer to the
+more easily digestible [meta-ti](https://github.com/TexasInstruments/meta-ti) if needed.
+
+The very good [simplest-yocto-setup](https://github.com/bootlin/simplest-yocto-setup) was used to help
+kickstart this project.
+
+## Prerequisites
+
+The basic Yocto dependencies are needed and instructions can be found [here](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html)
+
+```bash
+sudo apt install build-essential chrpath cpio debianutils diffstat file gawk gcc git iputils-ping
+                libacl1 locales python3 python3-git python3-jinja2 python3-pexpect python3-pip
+                python3-subunit socat texinfo unzip wget xz-utils zstd
 ```
 
-Checkout local dependencies
+This project uses `kas` to manage the Yocto build. Kas as proven to be fairly useful for quickly and
+effectively setup the project even if it's one more project dependency. It allows to setup external
+layers at the correct place as well as managing their version. Git submodules are an alternative to
+accomplish the same thing but I found that `kas` does a better and simpler job.
+
+You can install it using [pipx](https://github.com/pypa/pipx):
 
 ```shell
+pipx install kas
+```
+
+## Getting Started
+
+Setup `/opt` directory that'll be used for caching downloads and Yocto's shared state cache. This
+will allow other `cord-os` sandboxes to reuse the same package downloads and build cache which will
+increase build speed across sandboxes.
+
+```shell
+# Setup cord-os common directory
+mkdir -p /opt/cord/yocto/
+sudo chmod 740 /opt/cord/
+
+# Sets up external layers as well as configuring various download and build directories used by yocto
 kas checkout
+
+# Initialize build environment. Needs to be done on each new terminal
 source layers/third-party/openembedded-core/oe-init-build-env
 ```
 
-## Working with yocto
-
-### Building
-
-Building the image for default platform as specified in `.config.yaml`
+Building and flashing SD card
 
 ```shell
+# By default, this will build for the image specified in .config.yaml
 bitbake cord-image
+
+# Once SD card is plugged in, unmount it to allow bmaptool to write to it. Replace X with the device
+# path given by your OS. Tip: use dmesg after plugging the SD card to find out where the device is
+umount /dev/sdX*
+# Zoom zoom much faster than dd
+sudo bmaptool copy build/tmp-glibc/deploy/images/beaglebone-black/cord-image-beaglebone-black.rootfs.wic /dev/sdX
 ```
+
+Thanks to `openembedded-core`, `quemu` support comes for free. It can be pretty handy sometimes
+
+```bash
+# Building for a non-default image can be accomplished by setting the MACHINE environment variable
+# For example building and running the image for qemuarm machine
+MACHINE=qemuarm bitbake cord-image
+runqemu qemuarm nographic
+```
+
+Various helpful commands
+
+```shell
+# Build one single package
+bitbake <package name>
+
+# Show package versions
+bitbake -s
+```
+
+## Troubleshooting
 
 If you run on Ubuntu 24.04, you might encounter the following error when running `bitbake`:
 
@@ -47,108 +112,3 @@ To fix the issue, run the following command ([source](https://lists.yoctoproject
 ```shell
 sudo apparmor_parser -R /etc/apparmor.d/unprivileged_userns
 ```
-
-To clean the build directory
-
-```shell
-bitbake -c cleanall
-```
-
-Building only one package
-
-```shell
-bitbake <package name>
-```
-
-### Working with sub make module
-
-FIXME: Refine this section
-
-```bash
-bitbake -c menuconfig virtual/bootloader
-bitbake -c menuconfig virtual/kernel
-bitbake busybox -c menuconfig # ??
-```
-
-Configs are written to `.config` in the build directory. So far I'm copying them manually back to
-the git tree, It works but not ideal. For example:
-
-```bash
-cp build/tmp-glibc/work/beaglebone-black-oe-linux-gnueabi/linux-kiss/6.16/build/defconfig <defconfig_location>
-```
-
-[This](https://stackoverflow.com/questions/61220838/change-kernel-config-but-defconfig-already-there) could be relevant also
-
-### Cross-compiling kernel module
-
-Paths might change as I'm writing these steps after my first try. There might be some non-ideal
-things happening in here but it works. For now, it'll stay like that because it _works_
-
-1. Add kernel dev package for the image in `cord-image.bb`
-
-    ```shell
-    TOOLCHAIN_TARGET_TASK += "kernel-devsrc"
-    ```
-
-2. Build the cross compilation SDK
-
-    ```shell
-    bitbake cord-image -c populate_sdk
-    ```
-
-3. Extract the SDK. This will prompt for an install location
-
-    ```shell
-    ./tmp-glibc/deploy/sdk/oecore-cord-image-x86_64-cortexa7t2hf-neon-vfpv4-raspberrypi2-toolchain-nodistro.0.sh
-    ```
-
-4. `cd` to the location where the toolchain was extracted, inside the `usr/src/kernel` directory. In
-   my case it was `/opt/cord/test_yocto_sdk/sysroots/cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi/usr/src/kernel`
-
-    ```shell
-    cd /opt/cord/test_yocto_sdk/sysroots/cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi/usr/src/kernel
-    ```
-
-5. Prepare the kernel source for building
-
-    ```shell
-    make scripts
-    make prepare
-    ```
-
-6. In the directory containing the kernel module to be built `source` the cross compiler environment
-
-    ```shell
-    source /opt/cord/test_yocto_sdk/environment-setup-cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi
-    ```
-
-7. Build the kernel :)
-
-    ```shell
-    # Needed to tell the makefile where the kernel sources are
-    export KERNEL_SRC=/opt/cord/test_yocto_sdk/sysroots/cortexa7t2hf-neon-vfpv4-oe-linux-gnueabi/usr/src/kernel
-    # Build
-    make all
-    ```
-
-### Flashing
-
-```shell
-sudo umount /dev/sdX*
-sudo bmaptool copy build/tmp-glibc/deploy/images/beaglebone-black/cord-image-beaglebone-black.rootfs.wic /dev/sdX
-```
-
-```shell
-MACHINE=qemuarm bitbake cord-image
-runqemu qemuarm nographic
-```
-
-I struggled so much adding a DTS overlay. [This](https://stackoverflow.com/questions/75684094/yocto-create-a-meta-layer-with-a-bbappend-file-adding-dts-flle-to-raspberry-pi/75734668#75734668) post helped me get through that hurdle.
-
-The command that got me out of my misery was:
-
-```shell
-recipetool appendsrcfile -wm raspberrypi2 layers/meta-cord virtual/kernel layers/meta-cord/recipes-kernel/linux/files/<some overlay>.dts 'arch/${ARCH}/boot/dts/overlays/mydts-overlay.dts'
-```
-
-In this state it's just for raspberrypi2 but removing it makes it more generic.
