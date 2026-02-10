@@ -90,6 +90,58 @@ bitbake <package name>
 bitbake -s
 ```
 
+### Cross-compiling kernel module
+
+Paths might change as I'm writing these steps after my first try. There might be some non-ideal
+things happening in here but it works. For now, it'll stay like that because it _works_. Yocto calls
+this SDK the [Standard SDK](https://docs.yoctoproject.org/5.0.15/sdk-manual/using.html#using-the-standard-sdk)
+
+Eventually a proper `cord-image-dev` will be created as this is where all of the dev related stuff
+should live.
+
+1. Build the cross compilation SDK
+
+    ```shell
+    bitbake cord-image -c populate_sdk
+    ```
+
+2. Extract the SDK. This will install it at `/opt/cord/cord_sdk-x86_64`
+
+    ```shell
+    ./tmp-glibc/deploy/sdk/oecore-cord-image-x86_64-armv7at2hf-neon-beaglebone-black-toolchain-nodistro.0.sh -d /opt/cord/cord_sdk-x86_64
+    ```
+
+3. `cd` to the location where the toolchain was extracted, inside the `usr/src/kernel` directory.
+
+    ```shell
+    cd /opt/cord/cord_sdk-x86_64/sysroots/armv7at2hf-neon-oe-linux-gnueabi/usr/src/kernel
+    ```
+
+4. In the directory containing the kernel module to be built, `source` the cross compiler environment.
+   This needs to be done every time a new shell is created. I suppose it doesn't absolutely needs to
+   be done if the same variables are set manually in makefiles or whatever the user is using as a
+   build system.
+
+    ```shell
+    source /opt/cord/cord_sdk-x86_64/environment-setup-armv7at2hf-neon-oe-linux-gnueabi
+    ```
+
+5. Prepare the kernel source for building. [This](https://stackoverflow.com/a/67335209) SO post helped me with that step
+
+    ```shell
+    make scripts
+    make prepare
+    ```
+
+6. Build the kernel :)
+
+    ```shell
+    # Needed to tell the makefile where the kernel sources are and what compile options to use
+    export KERNEL_SRC=/opt/cord/cord_sdk-x86_64/sysroots/armv7at2hf-neon-oe-linux-gnueabi/usr/src/kernel
+    # Build kernel module. For example: layers/meta-cord/recipes-kernel/kernel-module-hello-world/files
+    make all
+    ```
+
 ## Troubleshooting
 
 If you run on Ubuntu 24.04, you might encounter the following error when running `bitbake`:
