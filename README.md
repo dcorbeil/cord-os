@@ -84,10 +84,15 @@ Various helpful commands
 
 ```shell
 # Build one single package
-bitbake <package name>
+bitbake <recipe name>
 
-# Show package versions
+# Show recipe versions for all recipes
 bitbake -s
+
+# Show variables and where variables are set
+bitbake -e cord-image
+```
+
 ```
 
 ### Cross-compiling kernel module
@@ -119,8 +124,7 @@ should live.
 
 4. In the directory containing the kernel module to be built, `source` the cross compiler environment.
    This needs to be done every time a new shell is created. I suppose it doesn't absolutely needs to
-   be done if the same variables are set manually in makefiles or whatever the user is using as a
-   build system.
+   be done if the same variables are set manually elsewhere.
 
     ```shell
     source /opt/cord/cord_sdk-x86_64/environment-setup-armv7at2hf-neon-oe-linux-gnueabi
@@ -133,7 +137,7 @@ should live.
     make prepare
     ```
 
-6. Build the kernel :)
+6. Build :)
 
     ```shell
     # Needed to tell the makefile where the kernel sources are and what compile options to use
