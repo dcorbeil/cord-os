@@ -14,6 +14,8 @@ IMAGE_FEATURES += "splash"
 
 # IMAGE_FEATURES += "allow-empty-password empty-root-password allow-root-login"
 IMAGE_FEATURES += "tools-sdk"
+# Relevant info on sources.list:
+# https://community.toradex.com/t/how-to-add-apt-package-manager-in-yocto-project/18849/2
 # TODO: Validate if PACKAGE_CLASSES = "package_deb" is needed. Currently placed in .config.yml
 IMAGE_FEATURES += "package-management"
 
@@ -29,6 +31,8 @@ IMAGE_INSTALL:append = " packagegroup-core-boot nano openssh udev-extraconf sl k
 # TODO: This should be a development-only feature and live in a development image.
 # Look at the following for an example:
 #   layers/third-party/openembedded-core/meta/recipes-extended/images/core-image-kernel-dev.bb
+
+# Variable info: https://stackoverflow.com/questions/60113300/toolchain-host-task-vs-toolchain-target-task
 # TOOLCHAIN_TARGET_TASK += "kernel-devsrc"
 
 # packagegroup-core-buildessential also exists and is a smaller version of *-buildessential
