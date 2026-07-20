@@ -15,5 +15,8 @@
         "*.pde": "java",
         "*.conf": "bitbake",
         "*.inc": "bitbake"
-    }
+    },
+    "bitbake.pathToBuildFolder": "${workspaceFolder}/build",
+    "bitbake.pathToEnvScript": "${workspaceFolder}/layers/third-party/openembedded-core/oe-init-build-env",
+    "bitbake.pathToBitbakeFolder": "${workspaceFolder}/layers/third-party/bitbake/bin/bitbake",
 }

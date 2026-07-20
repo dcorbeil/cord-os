@@ -25,7 +25,7 @@ IMAGE_FEATURES += "package-management"
 # sl for fun
 # IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl libgpiod libgpiod-tools libgpiod-dev"
 # IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world"
-IMAGE_INSTALL:append = " packagegroup-core-boot nano openssh udev-extraconf sl kernel-module-hello-world kernel-module-dtled"
+IMAGE_INSTALL:append = " packagegroup-core-boot nano openssh udev-extraconf sl kernel-module-hello-world kernel-module-dtled util-linux"
 
 # Install kernel devsrc for building out-of-tree modules on target.
 # TODO: This should be a development-only feature and live in a development image.
