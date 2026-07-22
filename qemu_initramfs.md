@@ -28,4 +28,3 @@
 
     The disk will be automatically mounted to `/media/vda`. Changes will persist through reboots
     in the `.img` file
-
