@@ -70,6 +70,7 @@ local_conf_header:
     USER_CLASSES = "buildstats"
     PATCHRESOLVE = "noop"
   debug-tweaks: |
+    # # allow root login without password
     EXTRA_IMAGE_FEATURES = "debug-tweaks"
   diskmon: |
     BB_DISKMON_DIRS = "\

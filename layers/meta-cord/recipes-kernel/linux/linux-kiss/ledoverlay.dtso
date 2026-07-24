@@ -1,0 +1,32 @@
+
+/dts-v1/;
+/plugin/;
+
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/pinctrl/am33xx.h>
+
+/*
+ * Helper to show loaded overlays under: /proc/device-tree/chosen/overlays/
+ */
+&{/chosen} {
+        overlays {
+            ledoverlay.kernel = __TIMESTAMP__;
+        };
+};
+
+
+&{/} {
+
+    cordleds {
+
+        // Use the driver with the matching "compatible", in this case "cord,dtled"
+        compatible = "cord,dtled";
+
+        led6 {
+            label = "red:user";
+            gpios = <&gpio0 31 GPIO_ACTIVE_HIGH>;
+        };
+    };
+
+};

@@ -93,6 +93,26 @@ bitbake -s
 bitbake -e cord-image
 ```
 
+### Working with sub make module
+
+Accessing the `menuconfig` for various packages
+
+```bash
+bitbake -c menuconfig virtual/bootloader
+bitbake -c menuconfig virtual/kernel
+bitbake busybox -c menuconfig
+```
+
+Configs are written to `.config` in the build directory. So far I'm copying them manually back to
+the git tree, It works but not ideal. For example:
+
+```bash
+# from the build directory
+cp tmp-glibc/work/beaglebone_black-oe-linux-gnueabi/linux-kiss/6.16/build/defconfig ../layers/meta-cord/recipes-kernel/linux/linux-kiss/beaglebone-black/defconfig
+```
+
+[This](https://stackoverflow.com/questions/61220838/change-kernel-config-but-defconfig-already-there) could be relevant also
+
 ### Cross-compiling kernel module
 
 Paths might change as I'm writing these steps after my first try. There might be some non-ideal
