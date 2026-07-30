@@ -3,9 +3,6 @@ hardware."
 
 LICENSE = "MIT"
 
-IMAGE_FEATURES += "splash"
-
-
 # FIXME: Figure out and document what is the perfect place for these settings to live.
 # I can probably figure out that the settings for allowing root login and empty password belongs
 # in a potential new debug image recipe.
@@ -23,9 +20,10 @@ IMAGE_FEATURES += "package-management"
 # dropbear for ssh access. Its a light-weight ssh server and DOESN'T support sftp
 # udev-extraconf for dynamic device handling
 # sl for fun
-# IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl libgpiod libgpiod-tools libgpiod-dev"
-# IMAGE_INSTALL = "packagegroup-core-boot nano dropbear udev-extraconf sl kernel-module-hello-world"
-IMAGE_INSTALL:append = " packagegroup-core-boot nano openssh udev-extraconf sl kernel-module-hello-world kernel-module-dtled"
+CORE_IMAGE_EXTRA_INSTALL += "nano openssh sl kernel-module-hello-world"
+
+# Bunch of fun useful commands
+CORE_IMAGE_EXTRA_INSTALL += "packagegroup-core-full-cmdline-utils"
 
 # Install kernel devsrc for building out-of-tree modules on target.
 # TODO: This should be a development-only feature and live in a development image.
