@@ -100,6 +100,7 @@ Accessing the `menuconfig` for various packages
 ```bash
 bitbake -c menuconfig virtual/bootloader
 bitbake -c menuconfig virtual/kernel
+bitbake -c savedefconfig virtual/kernel # to save when done updating menuconfig
 bitbake busybox -c menuconfig
 ```
 
