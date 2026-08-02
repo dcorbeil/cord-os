@@ -17,10 +17,9 @@ IMAGE_FEATURES += "tools-sdk"
 IMAGE_FEATURES += "package-management"
 
 # nano for text editing
-# dropbear for ssh access. Its a light-weight ssh server and DOESN'T support sftp
-# udev-extraconf for dynamic device handling
+# openssh for ssh access. Unlike (default) dropbear it provides an ftp server
 # sl for fun
-CORE_IMAGE_EXTRA_INSTALL += "nano openssh sl kernel-module-hello-world"
+CORE_IMAGE_EXTRA_INSTALL += "nano openssh sl kernel-module-hello-world kernel-module-dtled"
 
 # Bunch of fun useful commands
 CORE_IMAGE_EXTRA_INSTALL += "packagegroup-core-full-cmdline-utils"
