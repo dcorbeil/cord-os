@@ -41,8 +41,8 @@ repos:
     branch: scarthgap
     layers:
       meta-oe:
-  #     meta-python:
-  #     meta-networking:
+      meta-networking:
+      meta-python:
   #     meta-perl:
 
 bblayers_conf_header:
