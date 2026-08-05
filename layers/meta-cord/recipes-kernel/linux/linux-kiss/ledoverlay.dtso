@@ -1,6 +1,6 @@
 
 /dts-v1/;
-/plugin/;
+/plugin/; // tell dtc that this is an overlay
 
 
 #include <dt-bindings/gpio/gpio.h>
@@ -16,8 +16,25 @@
 };
 
 
+// Doing "&{/}" is the more modern way of doing:
+// fragment@0 {
+//         target-path = "/";
+//         __overlay__ {
+//             cordleds {
+//                 ...
+//             };
+//         };
+// };
+// The old way would also work but the modern way is cleaner as it fills in the fragment
+// and __overlay__ keyword. Because it fills the fragment@0 automatically, the old way might
+// have an advantage here because other fragments can be added manually. I don't know if the
+// modern way has a way to do that.
+// Anyways modern way is cleaner but I don't know what upstream kernel prefers.
+// The docs only mention the legacy way:
+// https://www.kernel.org/doc/Documentation/devicetree/overlay-notes.txt
 &{/} {
 
+    // Create a new cordleds node
     cordleds {
 
         // Use the driver with the matching "compatible", in this case "cord,dtled"
