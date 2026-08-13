@@ -135,18 +135,18 @@ should live.
     ./tmp-glibc/deploy/sdk/oecore-cord-image-x86_64-armv7at2hf-neon-beaglebone-black-toolchain-nodistro.0.sh -d /opt/cord/cord_sdk-x86_64
     ```
 
-3. `cd` to the location where the toolchain was extracted, inside the `usr/src/kernel` directory.
-
-    ```shell
-    cd /opt/cord/cord_sdk-x86_64/sysroots/armv7at2hf-neon-oe-linux-gnueabi/usr/src/kernel
-    ```
-
-4. In the directory containing the kernel module to be built, `source` the cross compiler environment.
+3. In the directory containing the kernel module to be built, `source` the cross compiler environment.
    This needs to be done every time a new shell is created. I suppose it doesn't absolutely needs to
    be done if the same variables are set manually elsewhere.
 
     ```shell
     source /opt/cord/cord_sdk-x86_64/environment-setup-armv7at2hf-neon-oe-linux-gnueabi
+    ```
+
+4. `cd` to the location where the toolchain was extracted, inside the `usr/src/kernel` directory.
+
+    ```shell
+    cd /opt/cord/cord_sdk-x86_64/sysroots/armv7at2hf-neon-oe-linux-gnueabi/usr/src/kernel
     ```
 
 5. Prepare the kernel source for building. [This](https://stackoverflow.com/a/67335209) SO post helped me with that step
