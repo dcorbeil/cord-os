@@ -19,10 +19,16 @@ IMAGE_FEATURES += "package-management"
 # nano for text editing
 # openssh for ssh access. Unlike (default) dropbear it provides an ftp server
 # sl for fun
-CORE_IMAGE_EXTRA_INSTALL += "nano openssh sl kernel-module-hello-world kernel-module-dtled"
+CORE_IMAGE_EXTRA_INSTALL += "nano openssh sl"
+
+# My own kernel modules
+CORE_IMAGE_EXTRA_INSTALL += "kernel-module-hello-world kernel-module-dtled"
 
 # Bunch of fun useful commands
 CORE_IMAGE_EXTRA_INSTALL += "packagegroup-core-full-cmdline-utils"
+
+# TODO: This belongs in a dev image
+CORE_IMAGE_EXTRA_INSTALL += "i2c-tools"
 
 # Install kernel devsrc for building out-of-tree modules on target.
 # TODO: This should be a development-only feature and live in a development image.
